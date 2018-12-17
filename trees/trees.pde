@@ -2,7 +2,7 @@ import java.util.Random;
 
 String file_path = "./models/tree";
 String ext = ".txt";
-int limit = 3;
+int limit = 10;
 
 void setup(){
     size(500,500, P3D);
@@ -18,13 +18,8 @@ void setup(){
         Saver s = new Saver(file_path + padded + ext);
         s.save(points);
     }
+    exit();
 }
 
 void draw(){
-    background(204);
-    String filename = "./models/tree000.txt";
-    String[] lines = loadStrings(filename);
-    Plotter plt = new Plotter(lines);
-    plt.plot();
-    plt.show();
 }

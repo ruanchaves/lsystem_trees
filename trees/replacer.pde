@@ -1,3 +1,5 @@
+import java.util.Random;
+
 class Replacer {
 
     String axiom;
@@ -22,11 +24,11 @@ class Replacer {
     public String generate(){
         String result = axiom;
         for (int k = 0; k < this.range; k++){
-	        int i = 0;
 	        for(String expr: start_expr){
+                Random r = new Random();
+                int i = r.nextInt(end_expr.size());
 	            String target = end_expr.get(i);
 	            result = result.replaceAll(expr,target);
-	            i += 1;
 	        }
         }
         return result;
