@@ -10,7 +10,7 @@ class TreeMaker {
         this.start_expr = new ArrayList<String>();
         this.end_expr = new ArrayList<String>();
         Random r = new Random();
-        int choice = r.nextInt(5);
+        int choice = r.nextInt(3);
         switch(choice){
             case 0:
                 tree1();
@@ -20,12 +20,6 @@ class TreeMaker {
                 break;
             case 2:
                 tree3();
-                break;
-            case 3:
-                tree4();
-                break;
-            case 4:
-                tree5();
                 break;
         }
     }
@@ -47,17 +41,17 @@ class TreeMaker {
         build("F","FF-[-F+F+F]+[+F-F-F]");
     }
 
-    public void tree4(){
-        this.axiom = "X";
-        build("X", "F[+X][-X]FX");
-        build("F", "FF");
-    }
+    /* public void tree4(){ */
+    /*     this.axiom = "X"; */
+    /*     build("X", "F[+X][-X]FX"); */
+    /*     build("F", "FF"); */
+    /* } */
 
-    public void tree5(){
-        this.axiom = "X";
-        build("X", "F-[[X]+X]+F[+FX]-X");
-        build("F","FF");
-    }
+    /* public void tree5(){ */
+    /*     this.axiom = "X"; */
+    /*     build("X", "F-[[X]+X]+F[+FX]-X"); */
+    /*     build("F","FF"); */
+    /* } */
 
 
 }

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.Random;
 
 class Painter {
 
@@ -9,23 +10,28 @@ class Painter {
     float turtle_z;
     float angle;
     float angle_increment;
-    float lowerbound;
-    float upperbound;
     float walk_step;
+    float branch_step;
+    boolean branch_mode;
     ArrayList<Float> points;
 
     Painter(){
+        branch_mode = false;
 	    turtle_x = 0;
 	    turtle_y = 0;
 	    turtle_z = 0;
 	    angle = 0;
-	    angle_increment = (float) Math.PI / 6.0;
-	    walk_step = 5;
+        walk_step = 3;
+        Random rd = new Random();
+        branch_step = walk_step + rd.nextInt(3);
+        float lowerbound = (float) Math.PI / 12.0;
+        float upperbound = (float) Math.PI / 3.0;
+        angle_increment = lowerbound + rd.nextFloat() * (upperbound - lowerbound);
         points = new ArrayList<Float>();
     }
 
     public void set_increment(){
-        angle_increment = (float) Math.PI / 6.0;
+        // Função reservada para flutuações no incremento
     }
 
     public void save_state(){
@@ -65,13 +71,20 @@ class Painter {
         float new_y;
         float new_z;
         for(int i = 0; i < walk.length(); i++){
+
+            if(point_stack.empty()) branch_mode = false;
+            else branch_mode = true;
+
             char c = walk.charAt(i);
             if(c == 'X') continue;
             else if(c == 'F') {
                     save_point();
                     //calcular nova posição sem rotação
                     turtle_x += 0;
-                    turtle_y += walk_step;
+
+                    if(branch_mode) turtle_y += branch_step;
+                    else turtle_y += walk_step;
+
                     turtle_z += 0;
                     //rotacionar no eixo Y com o angulo
                     new_x = turtle_x * get_cos(angle) +

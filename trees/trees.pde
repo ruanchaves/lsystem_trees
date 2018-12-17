@@ -2,14 +2,14 @@ import java.util.Random;
 
 String file_path = "./models/tree";
 String ext = ".txt";
-int limit = 10;
+int limit = 100;
 
 void setup(){
     size(500,500, P3D);
     for(int i = 0; i < limit; i++){
         TreeMaker t = new TreeMaker();
         Random rd = new Random();
-        int tree_size = 3;
+        int tree_size = 1 + rd.nextInt(3);
         Replacer r = new Replacer(tree_size, t.axiom, t.start_expr, t.end_expr);
         String result = r.generate();
         Painter p = new Painter();
