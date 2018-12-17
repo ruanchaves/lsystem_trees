@@ -5,6 +5,11 @@ class TreeMaker {
     String axiom = "F";
     ArrayList<String> start_expr;
     ArrayList<String> end_expr;
+    int tree_size;
+
+    public int size(){
+        return tree_size;
+    }
 
     TreeMaker(){
         this.start_expr = new ArrayList<String>();
@@ -14,12 +19,15 @@ class TreeMaker {
         switch(choice){
             case 0:
                 tree1();
+                tree_size = 2;
                 break;
             case 1:
                 tree2();
+                tree_size = 2;
                 break;
             case 2:
                 tree3();
+                tree_size = 2;
                 break;
         }
     }
