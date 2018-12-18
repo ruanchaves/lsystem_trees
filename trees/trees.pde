@@ -25,6 +25,9 @@ void setup(){
         p.mapping = mapping;
         ArrayList<Float> points = p.paint(result);
 
+        Thick th = new Thick();
+        th.generate();
+
         String padded = String.format("%03d", i);
         Saver s = new Saver(grass_path + padded + ext);
         s.save(points);
