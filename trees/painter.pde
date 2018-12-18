@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Random;
+import java.util.Map;
+import java.util.TreeMap;
 
 class Painter {
 
@@ -14,6 +16,7 @@ class Painter {
     float branch_step;
     boolean branch_mode;
     ArrayList<Float> points;
+    Map<Integer,String> mapping = new TreeMap<Integer,String>();
 
     Painter(){
         branch_mode = false;
@@ -21,7 +24,7 @@ class Painter {
 	    turtle_y = 0;
 	    turtle_z = 0;
 	    angle = 0;
-        walk_step = 3;
+        walk_step = 3.0;
         Random rd = new Random();
         branch_step = walk_step + rd.nextInt(3);
         float lowerbound = (float) Math.PI / 12.0;
@@ -64,12 +67,11 @@ class Painter {
         return (float) Math.cos(angle);
     }
 
-
-
     public ArrayList<Float> paint(String walk){
         float new_x;
         float new_y;
         float new_z;
+        int F_counter = 0;
         for(int i = 0; i < walk.length(); i++){
 
             if(point_stack.empty()) branch_mode = false;
@@ -82,8 +84,15 @@ class Painter {
                     //calcular nova posição sem rotação
                     turtle_x += 0;
 
-                    if(branch_mode) turtle_y += branch_step;
-                    else turtle_y += walk_step;
+                    if(mapping.size() == 0){
+                        if(branch_mode) turtle_y += branch_step;
+                        else turtle_y += walk_step;
+                    }
+                    else{
+                        String value = mapping.get(F_counter);
+                        String[] params = value.split(" ");
+                        turtle_y += Float.parseFloat(params[ params.length - 1]) * walk_step;
+                    }
 
                     turtle_z += 0;
                     //rotacionar no eixo Y com o angulo
@@ -124,6 +133,7 @@ class Painter {
                     /*         turtle_z * get_cos(angle); */
                     //salvar novo ponto
                     save_point();
+                    F_counter += 1;
             }
             else if(c == '[') {
                 save_state();

@@ -14,22 +14,16 @@ class TreeMaker {
     TreeMaker(){
         this.start_expr = new ArrayList<String>();
         this.end_expr = new ArrayList<String>();
-        Random r = new Random();
-        int choice = r.nextInt(2);
-        switch(choice){
-            case 0:
-                tree1();
-                tree_size = 2;
-                break;
-            case 1:
-                tree2();
-                tree_size = 2;
-                break;
-            /* case 2: */
-            /*     tree3(); */
-            /*     tree_size = 1; */
-            /*     break; */
-        }
+    }
+
+    public void make_grass(){
+        tree1();
+        tree_size = 2;
+    }
+
+    public void make_tree(){
+        tree1();
+        tree_size = 3;
     }
 
     public void build(String start_string, String end_string){

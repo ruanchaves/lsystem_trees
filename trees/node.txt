@@ -1,0 +1,50 @@
+import java.util.ArrayList;
+import java.util.List;
+
+class Node {
+
+    int data;
+    int level;
+    int color;
+    /* Node parent = null; */
+    /* List<Node> children = new ArrayList<Node>(); */
+    /* ArrayList<Integer> branches; */
+
+    /* Node(int data){ */
+    /*     this.data = data; */
+    /*     this.parent = new Node(); */
+    /*     this.branches = new ArrayList<Integer>(); */
+
+    /* } */
+
+    /* public Node add(Node child){ */
+    /*     child.setParent(this); */
+    /*     this.children.add(child); */
+    /*     return child; */
+    /* } */
+
+    /* public void setParent(Node parent){ */
+    /*     this.parent = parent; */
+    /* } */
+
+    /* public void getParent(){ */
+    /*     return parent; */
+    /* } */
+
+    /* public int getColor(){ */
+    /*     return color; */
+    /* } */
+
+    /* public void setColor(int color){ */
+    /*     this.color = color; */
+    /* } */
+
+    /* public void setLevel(int level){ */
+    /*     this.level = level; */
+    /* } */
+
+    /* public int getLevel(int level){ */
+    /*     return level; */
+    /* } */
+
+}
