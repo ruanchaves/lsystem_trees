@@ -57,6 +57,4 @@ class Node<Integer> {
     public void setParent(Node<Integer> parent){
         this.parent = parent;
     }
-
-
 }
