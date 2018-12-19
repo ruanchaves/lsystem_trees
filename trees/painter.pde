@@ -11,33 +11,19 @@ class Painter {
     float turtle_y;
     float turtle_z;
     float angle;
-    float angle_increment;
     float walk_step;
     ArrayList<Float> points;
-
-    Painter(){
-	    turtle_x = 0;
-	    turtle_y = 0;
-	    turtle_z = 0;
-	    angle = 0;
-        Random rd = new Random();
-        walk_step = 3 + rd.nextInt(3);
-        float bottom = (float) Math.PI / 6.0;
-        float upper = (float) Math.PI / 3.0;
-        float angle_increment = bottom + rd.nextFloat() * ( upper - bottom );
-        points = new ArrayList<Float>();
-    }
+    String walk;
 
     Painter(Replacer r){
-       this();
-       this.points = paint(r.result);
-    }
-
-    public float get_around(float value){
+	    this.turtle_x = 0;
+	    this.turtle_y = 0;
+	    this.turtle_z = 0;
+	    this.angle = 0;
         Random rd = new Random();
-        float bottom = 0.8 * value;
-        float upper = value;
-        return bottom + rd.nextFloat() * ( upper - bottom );
+        this.walk_step = 3.0;
+        points = new ArrayList<Float>();
+        this.walk = r.result;
     }
 
     public void save_state(){
@@ -70,25 +56,27 @@ class Painter {
         return (float) Math.cos(angle);
     }
 
-    public ArrayList<Float> paint(String walk){
+    public void paint(){
 
+        float angle_increment = (float) Math.PI / 6.0;
         float vector_x = 0;
         float vector_y = 1;
         float vector_z = 0;
         turtle_x = 0;
         turtle_y = 0;
         turtle_z = 0;
-
+        float tmp_x = vector_x;
+        float tmp_y = vector_y;
+        float tmp_z = vector_z;
         for(int i = 0; i < walk.length(); i++){
-
 
             vector_x = 0;
             vector_y = 1;
             vector_z = 0;
 
-            float tmp_x = vector_x;
-            float tmp_y = vector_y;
-            float tmp_z = vector_z;
+            tmp_x = vector_x;
+            tmp_y = vector_y;
+            tmp_z = vector_z;
 
             char c = walk.charAt(i);
 
@@ -122,7 +110,6 @@ class Painter {
                     tmp_x = vector_x;
                     tmp_y = vector_y;
                     tmp_z = vector_z;
-
                     vector_x *= walk_step;
                     vector_y *= walk_step;
                     vector_z *= walk_step;
@@ -138,13 +125,12 @@ class Painter {
                 load_state();
             }
             else if(c == '+') {
-                angle += get_around(angle_increment);
+                this.angle += angle_increment;
             }
             else if(c == '-') {
-                angle -= get_around(angle_increment);
+                this.angle -= angle_increment;
             }
         }
-        return points;
     }
 
 }
