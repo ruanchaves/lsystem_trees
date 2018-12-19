@@ -6,8 +6,20 @@ class Saver {
 
     String filename;
     PrintWriter output;
+    Map<Integer,String> mapping;
+    ArrayList<Float> points;
 
-    Saver(String filename){
+    Saver(Analyzer a, Painter p){
+        this.mapping = a.mapping;
+        this.points = p.points;
+    }
+
+    Saver(Painter p){
+        this.mapping = null;
+        this.points = p.points;
+    }
+
+    public void set_path(String filename){
         this.filename = filename;
     }
 
@@ -16,7 +28,7 @@ class Saver {
         saveStrings(filename, lines_array);
     }
 
-    public void save_meta(Map<Integer,String> mapping){
+    public ArrayList<String> load_meta(Map<Integer,String> mapping){
         ArrayList<String> lines = new ArrayList<String>();
         for( Map.Entry<Integer,String> entry : mapping.entrySet()){
             int int_key = entry.getKey();
@@ -25,21 +37,25 @@ class Saver {
             String value = entry.getValue();
             String line = key + " " + value;
             lines.add(line);
+            lines.add(line);
         }
-        dump(filename, lines);
+        return lines;
     }
 
-    public void save(ArrayList<Float> points){
+    public void save(){
         float x;
         float y;
         float z;
+        ArrayList<String> meta = load_meta(mapping);
         ArrayList<String> lines = new ArrayList<String>();
+        int j = 0;
         for(int i = 0; i < points.size(); i += 3){
             x = points.get(i);
             y = points.get(i+1);
             z = points.get(i+2);
-            String line = x + " " + y + " " + z;
+            String line = x + " " + y + " " + z + meta.get(j);
             lines.add(line);
+            j += 1;
         }
         dump(filename, lines);
     }

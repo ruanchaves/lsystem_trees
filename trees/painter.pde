@@ -13,28 +13,31 @@ class Painter {
     float angle;
     float angle_increment;
     float walk_step;
-    float branch_step;
-    boolean branch_mode;
     ArrayList<Float> points;
-    Map<Integer,String> mapping = new TreeMap<Integer,String>();
 
     Painter(){
-        branch_mode = false;
 	    turtle_x = 0;
 	    turtle_y = 0;
 	    turtle_z = 0;
 	    angle = 0;
-        walk_step = 3.0;
         Random rd = new Random();
-        branch_step = walk_step + rd.nextInt(3);
-        float lowerbound = (float) Math.PI / 12.0;
-        float upperbound = (float) Math.PI / 3.0;
-        angle_increment = lowerbound + rd.nextFloat() * (upperbound - lowerbound);
+        walk_step = 3 + rd.nextInt(3);
+        float bottom = (float) Math.PI / 6.0;
+        float upper = (float) Math.PI / 3.0;
+        float angle_increment = bottom + rd.nextFloat() * ( upper - bottom );
         points = new ArrayList<Float>();
     }
 
-    public void set_increment(){
-        // Função reservada para flutuações no incremento
+    Painter(Replacer r){
+       this();
+       this.points = paint(r.result);
+    }
+
+    public float get_around(float value){
+        Random rd = new Random();
+        float bottom = 0.8 * value;
+        float upper = value;
+        return bottom + rd.nextFloat() * ( upper - bottom );
     }
 
     public void save_state(){
@@ -68,72 +71,65 @@ class Painter {
     }
 
     public ArrayList<Float> paint(String walk){
-        float new_x;
-        float new_y;
-        float new_z;
-        int F_counter = 0;
+
+        float vector_x = 0;
+        float vector_y = 1;
+        float vector_z = 0;
+        turtle_x = 0;
+        turtle_y = 0;
+        turtle_z = 0;
+
         for(int i = 0; i < walk.length(); i++){
 
-            if(point_stack.empty()) branch_mode = false;
-            else branch_mode = true;
+
+            vector_x = 0;
+            vector_y = 1;
+            vector_z = 0;
+
+            float tmp_x = vector_x;
+            float tmp_y = vector_y;
+            float tmp_z = vector_z;
 
             char c = walk.charAt(i);
+
             if(c == 'X') continue;
             else if(c == 'F') {
                     save_point();
-                    //calcular nova posição sem rotação
-                    turtle_x += 0;
 
-                    if(mapping.size() == 0){
-                        if(branch_mode) turtle_y += branch_step;
-                        else turtle_y += walk_step;
-                    }
-                    else{
-                        String value = mapping.get(F_counter);
-                        String[] params = value.split(" ");
-                        turtle_y += Float.parseFloat(params[ params.length - 1]) * walk_step;
-                    }
-
-                    turtle_z += 0;
                     //rotacionar no eixo Y com o angulo
-                    new_x = turtle_x * get_cos(angle) +
-                            turtle_y * 0 +
-                            turtle_z * get_sin(angle);
-                    new_y = turtle_x * 0 +
-                            turtle_y * 1 +
-                            turtle_z * 0;
-                    new_z = turtle_x * -get_sin(angle) +
-                            turtle_y * 0 +
-                            turtle_z * get_cos(angle);
-                    turtle_x = new_x;
-                    turtle_y = new_y;
-                    turtle_z = new_z;
+                    vector_x = tmp_x * get_cos(angle) +
+                            tmp_y * 0 +
+                            tmp_z * get_sin(angle);
+                    vector_y = tmp_x * 0 +
+                            tmp_y * 1 +
+                            tmp_z * 0;
+                    vector_z = tmp_x * -get_sin(angle) +
+                            tmp_y * 0 +
+                            tmp_z * get_cos(angle);
+                    tmp_x = vector_x;
+                    tmp_y = vector_y;
+                    tmp_z = vector_z;
                     //rotacionar no eixo Z com o angulo
-                    new_x = turtle_x * get_cos(angle) +
-                            turtle_y * -get_sin(angle) +
-                            turtle_z * 0;
-                    new_y = turtle_x * get_sin(angle) +
-                            turtle_y * get_cos(angle) +
-                            turtle_z * 0;
-                    new_z = turtle_x * 0 +
-                            turtle_y * 0 +
-                            turtle_z * 1;
-                    turtle_x = new_x;
-                    turtle_y = new_y;
-                    turtle_z = new_z;
-                    //rotacionar no eixo X com o angulo
-                    /* new_x = turtle_x * 1 + */
-                    /*         turtle_y * 0 + */
-                    /*         turtle_z * 0; */
-                    /* new_y = turtle_x * 0 + */
-                    /*         turtle_y * get_cos(angle) + */
-                    /*         turtle_z * -get_sin(angle); */
-                    /* new_z = turtle_x * 0 + */
-                    /*         turtle_y * get_sin(angle) + */
-                    /*         turtle_z * get_cos(angle); */
-                    //salvar novo ponto
+                    vector_x = tmp_x * get_cos(angle) +
+                            tmp_y * -get_sin(angle) +
+                            tmp_z * 0;
+                    vector_y = tmp_x * get_sin(angle) +
+                            tmp_y * get_cos(angle) +
+                            tmp_z * 0;
+                    vector_z = tmp_x * 0 +
+                            tmp_y * 0 +
+                            tmp_z * 1;
+                    tmp_x = vector_x;
+                    tmp_y = vector_y;
+                    tmp_z = vector_z;
+
+                    vector_x *= walk_step;
+                    vector_y *= walk_step;
+                    vector_z *= walk_step;
+                    turtle_x += vector_x;
+                    turtle_y += vector_y;
+                    turtle_z += vector_z;
                     save_point();
-                    F_counter += 1;
             }
             else if(c == '[') {
                 save_state();
@@ -142,12 +138,10 @@ class Painter {
                 load_state();
             }
             else if(c == '+') {
-                set_increment();
-                angle += angle_increment;
+                angle += get_around(angle_increment);
             }
             else if(c == '-') {
-                set_increment();
-                angle -= angle_increment;
+                angle -= get_around(angle_increment);
             }
         }
         return points;

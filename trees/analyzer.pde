@@ -8,71 +8,45 @@ import java.util.Random;
 class Analyzer {
 
     String tree_string;
+    Map<Integer, String> mapping;
 
-    Analyzer(String tree_string){
-        this.tree_string = tree_string;
+    Analyzer(Replacer r){
+        this.tree_string = r.result;
+        build_tree();
     }
 
     public float get_thickness(int value){
-        Random rd = new Random();
-        int choice = rd.nextInt(3);
-        int chosen_base = 2;
-        switch(choice){
-            case 0:
-                chosen_base = 2;
-                break;
-            case 1:
-                chosen_base = 3;
-                break;
-            case 2:
-                chosen_base = 5;
-                break;
-        }
-        return 1.0 / (float) Math.pow(chosen_base, value - 1);
+        return (float) value;
     }
 
     public float get_leaves(ArrayList<Integer> branches){
-        if(branches.size() == 0) return 1.0;
+        if(branches.size() == 0) return 0.0;
         float max_branch = (float) Collections.max(branches);
-
-        Random rd = new Random();
-        int choice = rd.nextInt(3);
-        int chosen_base = 2;
-        switch (choice){
-            case 0:
-                chosen_base = 2;
-                break;
-            case 1:
-                chosen_base = 3;
-                break;
-            case 2:
-                chosen_base = 5;
-                break;
-        }
-
-        return 1.0 / (float) Math.pow(chosen_base, max_branch);
+        return max_branch;
     }
 
-    public Map<Integer, String> build_tree(){
-        Map<Integer, String> value_map = new TreeMap<Integer, String>();
-        Node<Integer> root = new Node<Integer>(-1);
+    public void build_tree(){
 
+        Map<Integer, String> value_map = new TreeMap<Integer, String>();
+        Stack<Node<Integer>> tree_stack = new Stack<Node<Integer>>();
+
+        Node<Integer> root = new Node<Integer>(-1);
         Node<Integer> current = root;
-        Node<Integer> last = current;
+
         int counter = 0;
 
 	    for(int i = 0; i < tree_string.length(); i++){
 		    char c = tree_string.charAt(i);
 		    if(c == '['){
-                current = last;
+                tree_stack.push(current);
 		    }
 		    if(c == 'F'){
-                last = current.add(new Node<Integer>(counter) );
+                current = current.add(new Node<Integer>(counter) );
                 counter += 1;
             }
 		    if(c == ']'){
-                last = last.getParent();
-		        current = last.getParent();
+                if(tree_stack.empty()) current = root;
+                else current = tree_stack.pop();
 		    }
             else{
                 continue;
@@ -140,6 +114,6 @@ class Analyzer {
             String map_value = Float.toString(leaf_value) + " " + Float.toString(branch_value);
             value_map.put(map_key, map_value);
         }
-        return value_map;
+        this.mapping = value_map;
     }
 }

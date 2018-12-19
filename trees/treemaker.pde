@@ -1,59 +1,94 @@
 import java.util.Random;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 class TreeMaker {
 
-    String axiom = "F";
-    ArrayList<String> start_expr;
-    ArrayList<String> end_expr;
+    String axiom;
+    HashMap<String, ArrayList<String>> expr;
     int tree_size;
 
     public int size(){
         return tree_size;
     }
 
-    TreeMaker(){
-        this.start_expr = new ArrayList<String>();
-        this.end_expr = new ArrayList<String>();
+    public void build(String key, String value){
+        ArrayList<String> arr = new ArrayList<String>();
+        if( expr.containsKey(key) ) arr = expr.get(key);
+        arr.add(value);
+        expr.put(key, arr);
     }
 
-    public void make_grass(){
-        tree1();
-        tree_size = 2;
+    TreeMaker(int choice, int tree_size){
+        this.expr = new HashMap<String, ArrayList<String>>();
+        this.tree_size = tree_size;
+        switch(choice){
+            case 0:
+                tree0();
+                break;
+            case 1:
+                tree1();
+                break;
+            case 2:
+                tree2();
+                break;
+            case 3:
+                tree3();
+                break;
+            case 4:
+                tree4();
+                break;
+            case 5:
+                tree5();
+                break;
+            case 6:
+                tree6();
+                break;
+            default:
+                tree0();
+                break;
+        }
     }
 
-    public void make_tree(){
-        tree1();
-        tree_size = 3;
-    }
-
-    public void build(String start_string, String end_string){
-        start_expr.add(start_string);
-        end_expr.add(end_string);
-    }
-
-    public void tree1(){
+    public void tree0(){
+        this.axiom = "F";
         build("F","F[+F]F[-F]F");
     }
 
-    public void tree2(){
+    public void tree1(){
+        this.axiom = "F";
         build("F","F[+F]F[-F][F]");
     }
 
-    public void tree3(){
+    public void tree2(){
+        this.axiom = "F";
         build("F","FF-[-F+F+F]+[+F-F-F]");
+    }
+
+    public void tree3(){
+        this.axiom = "X";
+        build("X", "F[+X]F[-X]+X");
+        build("X", "F[-X]F[-X]+X");
+        build("F", "FF");
     }
 
     public void tree4(){
         this.axiom = "X";
         build("X", "F[+X][-X]FX");
-        build("F", "FF");
+        build("F","FF");
     }
 
     public void tree5(){
         this.axiom = "X";
-        build("X", "F-[[X]+X]+F[+FX]-X");
+        build("X","F-[[X]+X]+F[+FX]-X");
         build("F","FF");
     }
 
+    public void tree6(){
+        this.axiom = "F";
+        build("F", "F[+F]F[-F]+F");
+        build("F", "F[+F]F");
+        build("F","F[-F]F");
+    }
 
 }
