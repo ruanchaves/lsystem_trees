@@ -11,9 +11,8 @@ int limit = 1000;
 void setup(){
     for(int i = 0; i < limit; i++){
 
-        Random rd = new Random();
-        int tree_size = 3;
-        int choice = rd.nextInt(7);
+        int tree_size = 7;
+        int choice = i % 7;
         TreeMaker t = new TreeMaker(tree_size, choice);
         Replacer r = new Replacer(t);
         Analyzer a = new Analyzer(r);
@@ -22,7 +21,7 @@ void setup(){
         Saver s = new Saver(a,p);
 
         String padded = String.format("%03d", i);
-        s.set_path(grass_path + padded + ext);
+        s.set_path(tree_path + padded + ext);
         s.save();
     }
     exit();
