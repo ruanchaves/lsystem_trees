@@ -53,16 +53,19 @@ class TreeMaker {
     public void tree0(){
         this.axiom = "F";
         build("F","F[+F]F[-F]F");
+        build("F","F[-F]F[-F]F");
     }
 
     public void tree1(){
         this.axiom = "F";
         build("F","F[+F]F[-F][F]");
+        build("F","F[-F]F[-F][F]");
     }
 
     public void tree2(){
         this.axiom = "F";
         build("F","FF-[-F+F+F]+[+F-F-F]");
+        build("F","FF+[-F+F+F]+[+F-F-F]");
     }
 
     public void tree3(){
@@ -75,12 +78,14 @@ class TreeMaker {
     public void tree4(){
         this.axiom = "X";
         build("X", "F[+X][-X]FX");
+        build("X", "F[-X][-X]FX");
         build("F","FF");
     }
 
     public void tree5(){
         this.axiom = "X";
         build("X","F-[[X]+X]+F[+FX]-X");
+        build("X","F+[[X]+X]+F[+FX]-X");
         build("F","FF");
     }
 
